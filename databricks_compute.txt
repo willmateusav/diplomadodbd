@@ -1,0 +1,79 @@
+🔹 Componentes principales de Databricks (explicación breve)
+
+1. Workspace
+   - Es el entorno colaborativo donde los equipos trabajan.
+   - Contiene notebooks, dashboards, repositorios y librerías.
+   - Ejemplo: un científico de datos crea un notebook para entrenar un modelo y otro miembro del equipo puede revisarlo en el mismo workspace.
+
+2. Repos / Data
+   - Repos: integración con GitHub, GitLab o Azure DevOps para versionamiento de código.
+   - Data: donde se gestionan catálogos, esquemas y tablas (unificación de datos bajo el modelo Lakehouse).
+
+3. Compute
+   - Donde se crean y configuran los clústeres o entornos de ejecución (con Spark debajo).
+   - Permite correr notebooks, jobs o cargas ETL.
+
+4. Jobs
+   - Permite programar tareas y pipelines (por ejemplo: correr una ETL diaria que transforma datos en Delta Lake).
+
+5. ML & AI
+   - Módulos para experimentación, entrenamiento y despliegue de modelos de Machine Learning.
+   - Ejemplo: un equipo entrena un modelo de predicción de churn y lo despliega en producción.
+
+------------------------------------------------------------
+
+🔹 Compute en detalle
+
+El compute es básicamente el motor de ejecución dentro de Databricks (los clústeres o entornos que procesan los datos).
+
+Características principales:
+1. Tipos de clústeres
+   - Interactive Clusters: usados por analistas o científicos de datos en notebooks.
+   - Job Clusters: creados automáticamente para correr un job programado y luego se apagan.
+   - SQL Warehouses: especializados en consultas SQL interactivas o BI.
+
+2. Configuración flexible
+   - Puedes elegir tamaño y tipo de nodos (workers, drivers).
+   - Puedes definir escalado automático (autoscaling) para ajustar el número de nodos según la carga de trabajo.
+   - Integración con instancias de AWS, Azure o GCP (según la nube que uses).
+
+3. Optimización y control
+   - Tags para cost management.
+   - Políticas de clúster para limitar configuraciones.
+   - Runtime preconfigurados (con Spark, MLlib, TensorFlow, etc.).
+
+------------------------------------------------------------
+
+🔹 Costos asociados al compute
+
+1. Se cobra por uso
+   - Los costos dependen del tiempo que el clúster está corriendo y de las instancias que seleccionaste.
+
+2. Factores que influyen en el costo
+   - Tipo de instancia (CPU vs GPU, memoria).
+   - Número de workers.
+   - Tiempo en ejecución.
+   - Uso de funcionalidades premium (ejemplo: serverless).
+
+3. Estrategias de ahorro
+   - Autoscaling.
+   - Jobs clusters (se prenden y apagan automáticamente).
+   - Configuración de tiempo de inactividad para apagado automático.
+
+------------------------------------------------------------
+
+🔹 Diferencia: Compute creado vs. Serverless
+
+Aspecto | Compute creado (clúster manual) | Serverless compute
+--------|---------------------------------|--------------------
+Gestión | Tú defines tipo de nodos, tamaño, autoscaling, políticas. | Databricks gestiona todo (infraestructura invisible para el usuario).
+Flexibilidad | Alta: eliges instancias, GPUs, librerías, runtime. | Menor: orientado a SQL y consultas rápidas.
+Costos | Pagas por los recursos que configures, incluso si el clúster está ocioso. | Pagas por segundo de ejecución de la query.
+Casos de uso | Workloads pesados, ETLs, ML, pipelines complejos. | Consultas SQL interactivas, dashboards BI, analítica ad-hoc.
+Ejemplo | Un data engineer crea un clúster de Spark para procesar logs diarios. | Un analista ejecuta queries en SQL Warehouse sin configurar nodos.
+
+------------------------------------------------------------
+
+👉 En resumen:
+- Si necesitas control y potencia, usas un clúster de compute creado manualmente.
+- Si necesitas simplicidad y rapidez para queries SQL, usas serverless compute (SQL Warehouse serverless).

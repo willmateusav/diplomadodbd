@@ -1,0 +1,75 @@
+Paso a paso para instalar PySpark en Windows
+===========================================
+
+1) Preparar entorno (recomendado: virtualenv o conda)
+----------------------------------------------------
+PowerShell (Windows):
+    python -m venv C:\ruta\pyspark-env
+    C:\ruta\pyspark-env\Scripts\Activate.ps1
+    python -m pip install --upgrade pip
+
+O con conda:
+    conda create -n pyspark python=3.10
+    conda activate pyspark
+
+2) Instalar Java (JDK 17+)
+--------------------------
+- Descarga e instala Java JDK 17 o superior (Adoptium/Temurin o Zulu).
+- Verifica instalación:
+    java --version
+
+3) Configurar JAVA_HOME
+-----------------------
+- En variables de entorno del sistema:
+  JAVA_HOME = C:\Program Files\Java\jdk-17.x.x
+- Añadir a PATH:
+  %JAVA_HOME%\bin
+
+4) Instalar PySpark (vía pip)
+-----------------------------
+Dentro del entorno virtual:
+    pip install pyspark
+
+(Opcional) instalar findspark:
+    pip install findspark
+
+5) (Opcional) Descargar Spark completo
+--------------------------------------
+- Descargar desde https://spark.apache.org/downloads/
+- Extraer en C:\spark\
+- Configurar:
+  SPARK_HOME = C:\spark\spark-x.x.x
+  Añadir %SPARK_HOME%\bin al PATH
+
+6) (Opcional) Configurar winutils (solo si usas Hadoop en Windows)
+------------------------------------------------------------------
+- Descargar winutils.exe correspondiente a Hadoop.
+- Crear carpeta C:\hadoop\bin y colocar winutils.exe allí.
+- Variables de entorno:
+  HADOOP_HOME = C:\hadoop
+  Añadir C:\hadoop\bin al PATH
+
+7) Probar la instalación
+------------------------
+Crear archivo test_pyspark.py con el contenido:
+
+    from pyspark.sql import SparkSession
+
+    spark = SparkSession.builder \        .master("local[*]") \        .appName("test_pyspark") \        .getOrCreate()
+
+    print("Spark version:", spark.version)
+
+    df = spark.range(5).toDF("n")
+    df.show()
+
+    spark.stop()
+
+Ejecutar:
+    python test_pyspark.py
+
+8) Errores comunes
+------------------
+- 'java' no se reconoce -> Revisar JAVA_HOME y PATH.
+- WARN NativeCodeLoader: Unable to load native-hadoop library -> Normal en Windows, instalar winutils si lo necesitas.
+- Version mismatch -> Usar Python >=3.9 y Java >=17.
+
